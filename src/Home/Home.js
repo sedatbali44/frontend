@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from "react";
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,6 +15,10 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import { useNavigate } from "react-router-dom";
+import Guardian from './Guardian';
+import AuthService from './../service/AuthService';
+import { Link } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,10 +63,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Home() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const navigate = useNavigate();
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -79,7 +82,22 @@ export default function Home() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+ 
+  const handleLogout = async (event) => {
+    event.preventDefault();
 
+    try {
+      const response = await AuthService.logOut();
+      console.log(response.data);
+      navigate("/");
+    } catch (error) {
+        if (error.response && error.response.status === 401) {
+        console.error("Invalid credentials");
+      } else {
+       console.error(error);
+     }
+    }
+  };
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -97,8 +115,12 @@ export default function Home() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
+        Profile
+          </Link>
+       </MenuItem>
+      <MenuItem onClick={handleLogout}>Log out</MenuItem>
     </Menu>
   );
 
@@ -212,6 +234,7 @@ export default function Home() {
           </Box>
         </Toolbar>
       </AppBar>
+      <Guardian/>
       {renderMobileMenu}
       {renderMenu}
     </Box>
