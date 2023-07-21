@@ -12,6 +12,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import Copyright from "./Copyright";
 
 export default function SingUp() {
   const navigate = useNavigate();
@@ -123,6 +124,12 @@ export default function SingUp() {
         </Grid>
       </Box>
     </Box>
+    <Grid container>
+        <Grid item xs={6}></Grid>
+          <Grid item xs={6}>
+          <Copyright variant="h6" sx={{ mt: 24, mb: 12 }} />
+        </Grid>
+       </Grid>
   </Container>
   )
 }

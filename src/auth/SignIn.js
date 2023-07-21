@@ -8,10 +8,11 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import axios from "axios";
+import AuthService from './../service/AuthService';
 import { useNavigate } from "react-router-dom";
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import Copyright from "./Copyright";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -24,13 +25,18 @@ export default function SignIn() {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/login", {
-        name,
-        email,
-        password,
-      });
-      console.log(response.data);
-      navigate("/home");
+      const response = await await AuthService.logIn(name, email, password);
+      console.log(response);
+      // get user ID and name from the response
+      if (response.userId){
+        const userId = response.userId;
+         const username = response.username;
+
+        // Store user ID and name in the local storage
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("username", username);
+        navigate("/home");
+      }
     } catch (error) {
         if (error.response && error.response.status === 401) {
         console.error("Invalid credentials");
@@ -109,7 +115,7 @@ export default function SignIn() {
                   Error occured, please try again — <strong>check it out!</strong>
                   </Alert>}
           <Grid container>
-            <Grid item>
+            <Grid item xs={12}>
               <Link href="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
@@ -117,6 +123,12 @@ export default function SignIn() {
           </Grid>
         </Box>
       </Box>
+       <Grid container>
+        <Grid item xs={6}></Grid>
+          <Grid item xs={6}>
+          <Copyright variant="h6" sx={{ mt: 24, mb: 12 }} />
+        </Grid>
+       </Grid>
     </Container>
   );
 }

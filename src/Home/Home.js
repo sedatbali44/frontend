@@ -19,6 +19,9 @@ import { useNavigate } from "react-router-dom";
 import Guardian from './Guardian';
 import AuthService from './../service/AuthService';
 import { Link } from 'react-router-dom';
+import WorldNews from "./WorldNews";
+import Grid from '@mui/material/Grid';
+import NYtimes from "./NYtimes";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -234,7 +237,19 @@ export default function Home() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Guardian/>
+      <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={3}>
+         <Grid item xs={4}>
+           <Guardian/>
+         </Grid>
+         <Grid item xs={4}>
+           <NYtimes/>
+         </Grid>
+         <Grid item xs={4}>
+         <WorldNews/>
+         </Grid>
+      </Grid>
+      </Box>
       {renderMobileMenu}
       {renderMenu}
     </Box>
