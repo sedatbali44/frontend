@@ -29,12 +29,13 @@ export default function SignIn() {
       console.log(response);
       // get user ID and name from the response
       if (response.userId){
-        const userId = response.userId;
+         const userId = response.userId;
          const username = response.username;
-
+         const email = response.email;
         // Store user ID and name in the local storage
         localStorage.setItem("userId", userId);
         localStorage.setItem("username", username);
+        localStorage.setItem("email", email);
         navigate("/home");
       }
     } catch (error) {
