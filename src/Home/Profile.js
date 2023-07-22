@@ -1,16 +1,25 @@
+import { Typography } from '@mui/material';
 import React from 'react'
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
 
 export default function Profile() {
-  const userId = localStorage.getItem("userId");
+  //const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("username");
   const email =localStorage.getItem("email");
   return (
-    <div>
-      <h1>Welcome to the Home page, {userName}!</h1>
-      <p>Your user ID: {userId}</p>
-      <p>Your user userName: {userName}</p>
-      <p>Your user user Email: {email}</p>
-      {/* Add your home page content here */}
-    </div>
+    <Container component="main" maxWidth="xs">
+        <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        >
+          <Typography>{"User Name:"}{userName}</Typography>
+          <Typography>{"Email:"}{email}</Typography>
+        </Box>
+    </Container>
   )
 }
