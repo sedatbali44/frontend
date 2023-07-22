@@ -45,7 +45,7 @@ export default function Guardian() {
 
     // Return null if no article is selected or not found
     if (!selectedArticleData) return null;
-    const saveLikedNews= async () => {
+    const saveLikedNews= async () => { //save liked news
        try{ const { likedNews } = await PreferencesService.createPreferencesWithUserIdAndName(userId,userName,selectedArticleData.sectionName,
         author,source, selectedArticleData.webUrl); 
         console.log(likedNews.message);

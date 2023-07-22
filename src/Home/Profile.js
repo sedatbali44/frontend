@@ -5,6 +5,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Container from "@mui/material/Container";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Box from "@mui/material/Box";
 
 const style = {
    width: '100%',
@@ -18,6 +20,16 @@ export default function Profile() {
   return (
    <Container component="main" maxWidth="xs">
        <List sx={style} component="nav" aria-label="mailbox folders">
+         <Box
+         sx={{
+          marginTop:6,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        >
+        <AccountCircleIcon fontSize='large'></AccountCircleIcon>
+        </Box>
          <ListItem button>
            <ListItemText primary="User Name" />
           {userName}
