@@ -25,7 +25,7 @@ export default function SignIn() {
     event.preventDefault();
 
     try {
-      const response = await await AuthService.logIn(name, email, password);
+      const response = await AuthService.logIn(name, email, password);
       console.log(response);
       // get user ID and name from the response
       if (response.userId){

@@ -8,11 +8,11 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Copyright from "./Copyright";
+import AuthService from './../service/AuthService';
 
 export default function SingUp() {
   const navigate = useNavigate();
@@ -25,11 +25,7 @@ export default function SingUp() {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/register", {
-        name,
-        email,
-        password,
-      });
+      const response = await AuthService.signUp(name,email,password);
       console.log(response.data);
       setMessage(true);
       setErrorMessage(false); 

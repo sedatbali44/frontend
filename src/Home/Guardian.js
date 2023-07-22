@@ -6,6 +6,7 @@ import { CardActionArea } from '@mui/material';
 import GuardianService from './../service/GuardianService';
 import { Dialog, DialogTitle, DialogContent, Typography } from '@mui/material';
 import { Link } from '@mui/material';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 
 export default function Guardian() {
   const [articles, setArticles] = useState([]);
@@ -45,6 +46,7 @@ export default function Guardian() {
           <Typography variant="body2" color="text.secondary">
             {selectedArticleData.webPublicationDate}
           </Typography>
+            <ThumbUpOffAltIcon/>
           <Typography variant="subtitle1">Details below</Typography>
           <Link href={selectedArticleData.webUrl} target="_blank" rel="noopener noreferrer" variant="subtitle2">
             {selectedArticleData.webUrl}
