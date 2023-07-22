@@ -12,6 +12,7 @@ export default function Guardian() {
   const [articles, setArticles] = useState([]);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [isThumbUpClicked, setIsThumbUpClicked] = useState(false); // New state variable
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,9 +25,14 @@ export default function Guardian() {
     };
     fetchData();
   }, []);
+
   const handleCardClick = (articleId) => {
     setSelectedArticle(articleId);
     setOpenDialog(true);
+  };
+
+  const handleThumbUpClick = () => {
+    setIsThumbUpClicked(!isThumbUpClicked);
   };
 
   const ArticleDialog = () => {
@@ -40,17 +46,18 @@ export default function Guardian() {
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>{selectedArticleData.webTitle}</DialogTitle>
         <DialogContent>
-         <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary">
             {selectedArticleData.sectionName}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {selectedArticleData.webPublicationDate}
           </Typography>
-            <ThumbUpOffAltIcon/>
+          {/* Check the state variable and set the color accordingly */}
+          <ThumbUpOffAltIcon style={{ color: isThumbUpClicked ? "black" : "blue" }} onClick={handleThumbUpClick} />
           <Typography variant="subtitle1">Details below</Typography>
           <Link href={selectedArticleData.webUrl} target="_blank" rel="noopener noreferrer" variant="subtitle2">
             {selectedArticleData.webUrl}
-           </Link>
+          </Link>
           {/* Add more content or formatting as needed */}
         </DialogContent>
       </Dialog>
