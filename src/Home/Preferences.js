@@ -31,36 +31,37 @@ export default function Preferences() {
   return (
     <Container component="main" maxWidth="xs">
       <Typography component="h1" variant="h5">
-          Your preferences
-        </Typography>
+        Your preferences
+      </Typography>
       <List component="nav" aria-label="mailbox folders">
-      {preferences.map((preference) => (
-        <React.Fragment key={preference.id}>
-          <ListItem>
-            <ListItemText primary="Category" />
-            {preference.category}
-          </ListItem>
-          <Divider />
-          <ListItem divider>
-            <ListItemText primary="Source" />
-            {preference.source}
-          </ListItem>
-          <Divider />
-          <ListItem  divider>
-            <ListItemText primary="Author" />
-            {preference.author}
-          </ListItem>
-          <ListItem  divider>
-            <ListItemText primary="Url" />
-           <Link  href={`https://${preference.url}`} target="_blank" rel="noopener noreferrer" variant="subtitle2">
-            {preference.url}
-          </Link>
-          </ListItem>
-          <Divider />
-        </React.Fragment>
-      ))}
-    </List>
-    <Button href="/home" variant="contained">Back to home</Button>
-  </Container>  
+        {preferences.map((preference) => (
+          <React.Fragment key={preference.id}>
+            <ListItem>
+              <ListItemText primary="Category" />
+              {preference.category}
+            </ListItem>
+            <Divider />
+            <ListItem divider>
+              <ListItemText primary="Source" />
+              {preference.source}
+            </ListItem>
+            <ListItem divider>
+              <ListItemText primary="Author" />
+              {preference.author}
+            </ListItem>
+            <ListItem divider>
+              <ListItemText primary="Url" />
+              <Link href={`https://${preference.url}`} target="_blank" rel="noopener noreferrer" variant="subtitle2">
+                {preference.url}
+              </Link>
+            </ListItem>
+            <Divider />
+          </React.Fragment>
+        ))}
+      </List>
+      <Button href="/home" variant="contained">
+        Back to home
+      </Button>
+    </Container>
   )
 }

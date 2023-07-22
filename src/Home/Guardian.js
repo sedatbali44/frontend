@@ -7,13 +7,17 @@ import GuardianService from './../service/GuardianService';
 import { Dialog, DialogTitle, DialogContent, Typography } from '@mui/material';
 import { Link } from '@mui/material';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import PreferencesService from '../service/PreferencesService';
 
 export default function Guardian() {
   const [articles, setArticles] = useState([]);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [isThumbUpClicked, setIsThumbUpClicked] = useState(false); // New state variable
-
+  const userName = localStorage.getItem("username");
+  const userId =localStorage.getItem("userId");
+  const source = "The Guardian";
+  const author = "Guardian admin";
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,7 +45,14 @@ export default function Guardian() {
 
     // Return null if no article is selected or not found
     if (!selectedArticleData) return null;
-
+    const saveLikedNews= async () => {
+       try{ const { likedNews } = await PreferencesService.createPreferencesWithUserIdAndName(userId,userName,selectedArticleData.sectionName,
+        author,source, selectedArticleData.webUrl); 
+        console.log(likedNews.message);
+       }catch(error){
+        console.error("Invalid credentials");
+       }
+      }
     return (
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>{selectedArticleData.webTitle}</DialogTitle>
@@ -52,8 +63,8 @@ export default function Guardian() {
           <Typography variant="body2" color="text.secondary">
             {selectedArticleData.webPublicationDate}
           </Typography>
-          {/* Check the state variable and set the color accordingly */}
-          <ThumbUpOffAltIcon style={{ color: isThumbUpClicked ? "black" : "blue" }} onClick={handleThumbUpClick} />
+          <ThumbUpOffAltIcon style={{ color: isThumbUpClicked ? "orange" : "black" }}
+            onClick={() => {handleThumbUpClick();saveLikedNews(); }} />
           <Typography variant="subtitle1">Details below</Typography>
           <Link href={selectedArticleData.webUrl} target="_blank" rel="noopener noreferrer" variant="subtitle2">
             {selectedArticleData.webUrl}
