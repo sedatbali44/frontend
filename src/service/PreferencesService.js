@@ -21,8 +21,16 @@ class PreferencesService {
       throw new Error(error.message);
     }
   };
-}
 
+  deleteLikedNewsByid = async(id) =>{
+    try {
+      const response = await axios.delete(`http://127.0.0.1:8000/api/preferences/${id}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+}
 const instance = new PreferencesService();
 
 export default instance;

@@ -18,6 +18,7 @@ export default function Guardian() {
   const userId =localStorage.getItem("userId");
   const source = "The Guardian";
   const author = "Guardian admin";
+  const  [likedNewsId, setLikedNewsId] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -35,10 +36,6 @@ export default function Guardian() {
     setOpenDialog(true);
   };
 
-  const handleThumbUpClick = () => {
-    setIsThumbUpClicked(!isThumbUpClicked);
-  };
-
   const ArticleDialog = () => {
     // Find the selected article based on its ID
     const selectedArticleData = articles.find(article => article.id === selectedArticle);
@@ -46,10 +43,20 @@ export default function Guardian() {
     // Return null if no article is selected or not found
     if (!selectedArticleData) return null;
     const saveLikedNews= async () => { //save liked news
-       try{ const { likedNews } = await PreferencesService.createPreferencesWithUserIdAndName(userId,userName,selectedArticleData.sectionName,
+      setIsThumbUpClicked(!isThumbUpClicked);
+       try{ 
+        if(!isThumbUpClicked) { const { likedNews } = await PreferencesService.createPreferencesWithUserIdAndName(userId,userName,selectedArticleData.sectionName,
         author,source, selectedArticleData.webUrl); 
-        console.log(likedNews.message);
-       }catch(error){
+         console.log(likedNews.message);
+         setLikedNewsId(likedNews.preference.id);
+         console.log("likedNewsId",likedNewsId);
+        } 
+        if(isThumbUpClicked) {
+          const { deleteNews } = await PreferencesService.deleteLikedNewsByid(likedNewsId);
+          console.log(deleteNews);
+          }
+        }
+       catch(error){
         console.error("Invalid credentials");
        }
       }
@@ -64,7 +71,7 @@ export default function Guardian() {
             {selectedArticleData.webPublicationDate}
           </Typography>
           <ThumbUpOffAltIcon style={{ color: isThumbUpClicked ? "orange" : "black" }}
-            onClick={() => {handleThumbUpClick();saveLikedNews(); }} />
+            onClick={() => {saveLikedNews() }} />
           <Typography variant="subtitle1">Details below</Typography>
           <Link href={selectedArticleData.webUrl} target="_blank" rel="noopener noreferrer" variant="subtitle2">
             {selectedArticleData.webUrl}
