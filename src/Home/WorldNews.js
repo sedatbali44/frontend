@@ -6,11 +6,19 @@ import { CardActionArea } from '@mui/material';
 import WorldNewsService from './../service/WorldNewsService';
 import { Dialog, DialogTitle, DialogContent, Typography } from '@mui/material';
 import { Link } from '@mui/material';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import PreferencesService from '../service/PreferencesService';
 
 export default function WorldNews() {
   const [articles, setArticles] = useState([]);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [isThumbUpClicked, setIsThumbUpClicked] = useState(false); // New state variable
+  const userName = localStorage.getItem("username");
+  const userId =localStorage.getItem("userId");
+  const source = "World News Admin";
+  const category = "World News";
+  const  [likedNewsId, setLikedNewsId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +42,24 @@ export default function WorldNews() {
 
     // Return null if no article is selected or not found
     if (!selectedArticleData) return null;
-
+    const saveLikedNews= async () => { //save liked news
+      setIsThumbUpClicked(!isThumbUpClicked);
+       try{ 
+        if(!isThumbUpClicked) { const { likedNews } = await PreferencesService.createPreferencesWithUserIdAndName(userId,userName,category,
+          selectedArticleData.author,source, selectedArticleData.url); 
+         console.log(likedNews.message);
+         setLikedNewsId(likedNews.preference.id);
+         console.log("likedNewsId",likedNewsId);
+        } 
+        if(isThumbUpClicked) {
+          const { deleteNews } = await PreferencesService.deleteLikedNewsByid(likedNewsId);
+          console.log(deleteNews);
+          }
+        }
+       catch(error){
+        console.error("Invalid credentials");
+       }
+      }
     return (
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>{selectedArticleData.webTitle}</DialogTitle>
@@ -43,6 +68,8 @@ export default function WorldNews() {
           <Typography variant="body2" color="text.secondary">
             {selectedArticleData.publish_date}
           </Typography>
+          <ThumbUpOffAltIcon style={{ color: isThumbUpClicked ? "orange" : "black" }}
+            onClick={() => {saveLikedNews() }} />
           <Typography variant="subtitle2">{"Author:"}{selectedArticleData.author}</Typography>
           <Typography variant="subtitle1">Details below</Typography>
           <Link href={selectedArticleData.url} target="_blank" rel="noopener noreferrer" variant="subtitle2">
